@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/login.css">
+    <!-- 引入jquery 之後使用AJAX與 Google App Script 互動 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>login</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap');
+
+        * {
+            /* border: solid 1px black; */
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+        }
+
+        img {
+            width: 100px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        /* 讓此 div 內的表單不要換行 */
+
+        .noWrap form {
+            display: inline;
+            margin: 0px 10px;
+        }
+
+        .table {
+            display: flex;
+            justify-content: center;
+        }
+
+        table,
+        td {
+            border: 1px solid #333;
+        }
+
+        thead,
+        tfoot {
+            background-color: #333;
+            color: #fff;
+        }
+
+        table,
+        td,
+        th {
+            padding: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <br>
+    <br>
+    <div class="container">
+        <h3 class="head_text">Sign UP / Log In System</h1>
+    </div>
+    <div class="container" id="login">
+        <div class="block">
+            <div class="noWrap">
+                <form name="read" class="login_block">
+                    <input id="target" type="text" name="target" value="0" hidden>
+                    <div class="header">
+                        <h3>Log in</h3>
+                    </div>
+                    <div class="username">
+                        <h3>Username</h3>
+                        <input id="readName" type="text" name="username" placeholder="username">
+                        <h4>should be within 7 - 20 English characters </h4>
+                    </div>
+                    <div class="password">
+                        <h3>Password</h3>
+                        <input id="readName2" type="text" name="password" placeholder="password">
+                        <h4>should be within 8 - 21 English characters </h4>
+                    </div>
+                    <div class="button">
+                        <a onclick="toggle()">Sign up?</a>
+                        <input type="submit" value="confirm">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="signup">
+        <div class="block">
+            <div class="noWrap">
+                <form name="create" class="login_block">
+                    <input id="target" type="text" name="target" value="0" hidden>
+                    <div class="header">
+                        <h3>Log in</h3>
+                    </div>
+                    <div class="username">
+                        <h3>Username</h3>
+                        <input id="createName" type="text" name="username" placeholder="username">
+                        <h4>should be within 7 - 20 English characters </h4>
+                    </div>
+                    <div class="password">
+                        <h3>Password</h3>
+                        <input id="createName2" type="text" name="password" placeholder="password">
+                        <h4>should be within 8 - 21 English characters </h4>
+                    </div>
+                    <div class="button">
+                        <a onclick="toggle()">Log in!</a>
+                        <input type="submit" value="confirm">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <br>
+    <div id="table" class="table"></div>
+    
+    <script src="js/login.js" type="text/javascript"></script>
+</body>
+
+</html>
