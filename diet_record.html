@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入jquery 之後使用AJAX與 Google App Script 互動 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+
+
+    <!--include css & js from bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dropdowns/">
+
+    <link rel="stylesheet" type="text/css" href="css/dropdowns.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css.map">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+
+    <!--google chart-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <title>diet record</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap');
+
+        * {
+            /* border: solid 1px black; */
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+        }
+
+        img {
+            width: 100px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        /* 讓此 div 內的表單不要換行 */
+
+        .noWrap form {
+            display: inline;
+            margin: 0px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <br>
+    <h2>diet record</h2>
+    <div style="width:100%; display: flex; justify-content: center; align-items: center;">
+        <div id="piechart" style="width: 900px; height: 500px; margin: 0px auto;"></div>
+    </div>
+    
+    <br>
+
+    <div class="accordion" id="accordionExample" style="width: 80%; margin: 0 auto;">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    To add some records...
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <!------------ CREATE FORM ------------>
+                    <form name="create">
+                        <input id="target" type="text" name="target" value="2" hidden>
+                        <input class="username" name="username" value="" hidden>
+                        <input type="datetime-local" id="datepicker_c" name="datetime-local" required>
+                        <input type="text" class="date" name="date&time" hidden>
+                        <input type="text" name="food_name" value="" placeholder="food name" required>
+                        <input type="number" name="cal" value="" placeholder="cal" required step="0.01">
+                        <input type="number" name="protein" value="" placeholder="protein" required step="0.01">
+                        <input type="number" name="fat" value="" placeholder="fat" step="0.01">
+                        <input type="number" name="carbohydrate" value="" placeholder="carbohydrate" required step="0.01">
+                        <input type="number" name="sugar" value="" placeholder="sugar" required step="0.01">
+                        <input type="number" name="nacl" value="" placeholder="nacl" required step="0.01">
+
+                        <input type="submit" class="btn btn-info" value="create">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    To see your records, daily or all time...
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <!------------ READ FORM ------------>
+                    <form id="toRead" name="read">
+                        <input id="target" type="text" name="target" value="2" hidden>
+                        <input class="username" name="username" value="" hidden>
+                        <input type="datetime-local" id="datepicker_r" name="datetime-local">
+                        <input type="text" class="date" name="date&time" hidden>
+
+                        <h4><span class="badge badge-secondary">At the top, please input the date you want. Or directly
+                            read for all records.</span></h4>
+                        <input id="toRead" class="btn btn-info" type="submit" value="read">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Show the records, you can delete or modify...
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div id="table" class="table">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!------------ DELETE FORM ------------>
+    <form id="toDelete" name="delete" hidden>
+        <input id="target" type="text" name="target" value="2" hidden>
+        <input type="text" name="method" value="DELETE" hidden>
+        <input id="deleteRow" name="deleteRow" type="number" value="">
+
+        <input id="submitDel" type="submit" value="delete">
+    </form>
+    <br>
+    <!-- ---------- UPDATE FORM ---------- -->
+    <form id="toUpdate" name="update" hidden>
+        <input type="text" name="target" value="2" hidden>
+        <input id="username" class="username" name="username" value="" hidden>
+        <input id="date" class="datetime-local" type="text" name="date&time" value="" hidden>
+        <input type="text" name="method" value="UPDATE" hidden>
+        <input id="updateRow" type="number" name="updateRow" placeholder="updateRow">
+        <input id="foodname" type="text" name="food_name" value="" placeholder="food name">
+        <input id="cal" type="number" name="cal" value="" placeholder="cal">
+        <input id="protein" type="number" name="protein" value="" placeholder="protein">
+        <input id="fat" type="number" name="fat" value="" placeholder="fat">
+        <input id="carbohydrate" type="number" name="carbohydrate" value="" placeholder="carbohydrate">
+        <input id="sugar" type="number" name="sugar" value="" placeholder="sugar">
+        <input id="nacl" type="number" name="nacl" value="" placeholder="nacl">
+
+        <input id="submitUp" type="submit" value="update">
+    </form>
+    <br>
+
+
+    <script src="js/diet_record.js" type="text/javascript"></script>
+</body>
+
+</html>
