@@ -14,7 +14,6 @@ document.forms['read'].addEventListener('submit', e => {
     $('.date').attr('value', dt.replace('T', ' '));
     readMethod(e);
     window.alert('read complete, please see the resault.');
-    //document.forms['read'].reset();
 })
 
 // 每次操作後都呼叫他，以呼叫API重新繪製頁面表格
@@ -27,7 +26,7 @@ function readMethod(e) {
     $.ajax({
         url: scriptURL,
         type: "GET",
-        data: { "target": $("#target").val() },//要操作的工作表，這裡是飲食紀錄(2)
+        data: { "target": $("#target").val() },//要操作的工作表，這裡是運動紀錄(4)
         //dataType : "text",
 
         // 若成功，執行以下...
@@ -55,17 +54,14 @@ function setUpdateRowToggle(i) {
     $("#toUpdate" + String(i)).slideToggle();
 }
 
+//設定'修改表單'
 function setUpdate(i) {
     $("#username").attr("value", $("#toUpdate" + String(i) + 'username').val());
     $("#date").attr("value", $("#toUpdate" + String(i) + 'datetime-local').val().replace('T', ' '));
     $("#updateRow").attr("value", $("#toUpdate" + String(i) + 'updateRow').val());
-    $("#foodname").attr("value", $("#toUpdate" + String(i) + 'food_name').val());
-    $("#cal").attr("value", $("#toUpdate" + String(i) + 'cal').val());
-    $("#protein").attr("value", $("#toUpdate" + String(i) + 'protein').val());
-    $("#fat").attr("value", $("#toUpdate" + String(i) + 'fat').val());
-    $("#carbohydrate").attr("value", $("#toUpdate" + String(i) + 'carbohydrate').val());
-    $("#sugar").attr("value", $("#toUpdate" + String(i) + 'sugar').val());
-    $("#nacl").attr("value", $("#toUpdate" + String(i) + 'nacl').val());
+    $("#how_to_eat").attr("value", $("#toUpdate" + String(i) + 'how_to_eat').val());
+    $("#what_to_eat").attr("value", $("#toUpdate" + String(i) + 'what_to_eat').val());
+    
     $("#submitUp").click();
 }
 
@@ -74,7 +70,7 @@ function display(formData) {
 
     // 先清空內容
     document.getElementById("table").innerHTML = "";
-    let content = '<table class="table"><thead><th>date&time</th><th>food_name</th><th>cal</th><th>protein</th><th>fat</th><th>carbohydrate</th><th>sugar</th><th>nacl</th></thead><tbody>';
+    let content = '<table class="table"><thead><th>date&time</th><th>how_to_eat</th><th>what_to_eat</th></thead><tbody>';
 
     // header 不需要繪製，所以 shift 掉
     formData.shift();
@@ -83,14 +79,6 @@ function display(formData) {
 
     let username = document.getElementsByClassName("username")[1];
     let date = document.getElementById("datepicker_r");
-    console.log(date.value);
-
-    let data_cal = 0;
-    let data_protein = 0;
-    let data_fat = 0;
-    let data_carbohydrate = 0;
-    let data_sugar = 0;
-    let data_nacl = 0;
 
     let tr_css = '';
     let td_css = '';
@@ -118,32 +106,23 @@ function display(formData) {
                     + '<button class="btn btn-dark" onclick="setUpdateRowToggle(' + String(i) + ');">update</button><br>' + formData[i][1] + "</td>";
                 content += td_css + formData[i][2] + "</td>";
                 content += td_css + formData[i][3] + "</td>";
-                content += td_css + formData[i][4] + "</td>";
-                content += td_css + formData[i][5] + "</td>";
-                content += td_css + formData[i][6] + "</td>";
-                content += td_css + formData[i][7] + "</td>";
-                content += td_css + formData[i][8] + "</td></tr>";
                 content += '<tr><td colspan=8><form id="toUpdate' + String(i) + '" name="update_to_linked_form" style="display: none">' +
-                '<input type="text" name="method" value="UPDATE" hidden>' +
-                '<input id="toUpdate' + String(i) + 'updateRow" type="number" name="updateRow" placeholder="updateRow" value="' + String(i) + '" hidden>' +
-                '<input  type="text" name="target" value="2" hidden>' +
-                '<input id="toUpdate' + String(i) + 'username" class="username" name="username" value="' + localStorage.getItem("username") + '" hidden>' +
-                '<input id="toUpdate' + String(i) + 'datetime-local" type="datetime-local" name="datetime-local" value="">' +
-                '<input id="toUpdate' + String(i) + 'food_name" type="text" name="food_name" value="' + formData[i][2] + '" placeholder="food name">' +
-                '<input id="toUpdate' + String(i) + 'cal" type="number" name="cal" value="' + formData[i][3] + '" placeholder="cal(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'protein" type="number" name="protein" value="' + formData[i][4] + '" placeholder="protein(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'fat" type="number" name="fat" value="' + formData[i][5] + '" placeholder="fat(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'carbohydrate" type="number" name="carbohydrate" value="' + formData[i][6] + '" placeholder="carbohydrate(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'sugar" type="number" name="sugar" value="' + formData[i][7] + '" placeholder="sugar(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'nacl" type="number" name="nacl" value="' + formData[i][8] + '" placeholder="nacl(g)" step="0.01">' +
-                '<input type="button" value="update" onclick="setUpdate(' + String(i) + ');"></form></td></tr>';
-
-                data_cal += parseFloat(formData[i][3]);
-                data_protein += parseFloat(formData[i][4]);
-                data_fat += parseFloat(formData[i][5]);
-                data_carbohydrate += parseFloat(formData[i][6]);
-                data_sugar += parseFloat(formData[i][7]);
-                data_nacl += parseFloat(formData[i][8]);
+                    '<input type="text" name="method" value="UPDATE" hidden>' +
+                    '<input id="toUpdate' + String(i) + 'updateRow" type="number" name="updateRow" placeholder="updateRow" value="' + String(i) + '" hidden>' +
+                    '<input  type="text" name="target" value="4" hidden>' +
+                    '<input id="toUpdate' + String(i) + 'username" class="username" name="username" value="' + localStorage.getItem("username") + '" hidden>' +
+                    '<input id="toUpdate' + String(i) + 'datetime-local" type="datetime-local" name="datetime-local" value="">' +
+                    '<select id="toUpdate' + String(i) + 'how_to_eat" name="how_to_eat">' +
+                    '<option disabled selected>' + formData[i][2] + '</option>' +
+                    '<option>地中海飲食法</option>' +
+                    '<option>間歇性斷食</option>' +
+                    '<option>低碳飲食</option>' +
+                    '<option>低熱量容積飲食</option>' +
+                    '<option>穴居人飲食法</option>' +
+                    '<option>得舒飲食</option>' +
+                    '</select>' +
+                    '<input id="toUpdate' + String(i) + 'what_to_eat" type="text" name="what_to_eat" value="' + formData[i][3] + '" placeholder="what_to_eat" required>' +
+                    '<input type="button" value="update" onclick="setUpdate(' + String(i) + ');"></form></td></tr>';
             }
         }
     }
@@ -171,32 +150,23 @@ function display(formData) {
                     + '<button class="btn btn-dark" onclick="setUpdateRowToggle(' + String(i) + ');">update</button><br>' + formData[i][1] + "</td>";
                 content += td_css + formData[i][2] + "</td>";
                 content += td_css + formData[i][3] + "</td>";
-                content += td_css + formData[i][4] + "</td>";
-                content += td_css + formData[i][5] + "</td>";
-                content += td_css + formData[i][6] + "</td>";
-                content += td_css + formData[i][7] + "</td>";
-                content += td_css + formData[i][8] + "</td></tr>";
                 content += '<tr><td colspan=8><form id="toUpdate' + String(i) + '" name="update_to_linked_form" style="display: none">' +
-                '<input type="text" name="method" value="UPDATE" hidden>' +
-                '<input id="toUpdate' + String(i) + 'updateRow" type="number" name="updateRow" placeholder="updateRow" value="' + String(i) + '" hidden>' +
-                '<input  type="text" name="target" value="2" hidden>' +
-                '<input id="toUpdate' + String(i) + 'username" class="username" name="username" value="' + localStorage.getItem("username") + '" hidden>' +
-                '<input id="toUpdate' + String(i) + 'datetime-local" type="datetime-local" name="datetime-local" value="">' +
-                '<input id="toUpdate' + String(i) + 'food_name" type="text" name="food_name" value="' + formData[i][2] + '" placeholder="food name">' +
-                '<input id="toUpdate' + String(i) + 'cal" type="number" name="cal" value="' + formData[i][3] + '" placeholder="cal(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'protein" type="number" name="protein" value="' + formData[i][4] + '" placeholder="protein(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'fat" type="number" name="fat" value="' + formData[i][5] + '" placeholder="fat(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'carbohydrate" type="number" name="carbohydrate" value="' + formData[i][6] + '" placeholder="carbohydrate(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'sugar" type="number" name="sugar" value="' + formData[i][7] + '" placeholder="sugar(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'nacl" type="number" name="nacl" value="' + formData[i][8] + '" placeholder="nacl(g)" step="0.01">' +
-                '<input type="button" value="update" onclick="setUpdate(' + String(i) + ');"></form></td></tr>';
-
-                data_cal += parseFloat(formData[i][3]);
-                data_protein += parseFloat(formData[i][4]);
-                data_fat += parseFloat(formData[i][5]);
-                data_carbohydrate += parseFloat(formData[i][6]);
-                data_sugar += parseFloat(formData[i][7]);
-                data_nacl += parseFloat(formData[i][8]);
+                    '<input type="text" name="method" value="UPDATE" hidden>' +
+                    '<input id="toUpdate' + String(i) + 'updateRow" type="number" name="updateRow" placeholder="updateRow" value="' + String(i) + '" hidden>' +
+                    '<input  type="text" name="target" value="4" hidden>' +
+                    '<input id="toUpdate' + String(i) + 'username" class="username" name="username" value="' + localStorage.getItem("username") + '" hidden>' +
+                    '<input id="toUpdate' + String(i) + 'datetime-local" type="datetime-local" name="datetime-local" value="">' +
+                    '<select id="toUpdate' + String(i) + 'how_to_eat" name="how_to_eat">' +
+                    '<option disabled selected>' + formData[i][2] + '</option>' +
+                    '<option>地中海飲食法</option>' +
+                    '<option>間歇性斷食</option>' +
+                    '<option>低碳飲食</option>' +
+                    '<option>低熱量容積飲食</option>' +
+                    '<option>穴居人飲食法</option>' +
+                    '<option>得舒飲食</option>' +
+                    '</select>' +
+                    '<input id="toUpdate' + String(i) + 'what_to_eat" type="text" name="what_to_eat" value="' + formData[i][3] + '" placeholder="what_to_eat" required>' +
+                    '<input type="button" value="update" onclick="setUpdate(' + String(i) + ');"></form></td></tr>';
             }
         }
     }
@@ -205,45 +175,8 @@ function display(formData) {
     content += "</tbody></table>";
     let hasResault = 0;
     hasResault = content.indexOf('</tr>');
-    console.log(data_carbohydrate);
     (hasResault == -1) ? (content = 'No Resault Founded.') : content = content;
     document.getElementById("table").innerHTML = content;
-
-    //chart展示
-    if (hasResault > -1) {
-        google.charts.load("current", { packages: ["corechart"] });
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Nutrition', 'gram(s)'],
-                ['Cal', data_cal], ['Protein', data_protein], ['Fat', data_fat],
-                ['Carbohydrate', data_carbohydrate], ['Sugar', data_sugar], ['Nacl', data_nacl],
-            ]);
-
-            var options = {
-                title: 'Nutrition You Got By Eating.',
-                //legend: 'none',
-                pieSliceText: 'label',
-                width: 900,
-                height: 500,
-                pieHole: 0.4,
-
-                slices: {
-                    4: { offset: 0.2 },
-                    12: { offset: 0.3 },
-                    14: { offset: 0.4 },
-                    15: { offset: 0.5 },
-                },
-            };
-
-            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-            chart.draw(data, options);
-        }
-    }
-    else {
-        document.getElementById('piechart').innerHTML = 'Data is not complite.'
-    }
 }
 
 // CREATE
@@ -325,7 +258,7 @@ window.addEventListener('load', function () {
     $.ajax({
         url: scriptURL,
         type: "GET",
-        data: { "target": $("#target").val() },//要操作的工作表，這裡是飲食紀錄(2)
+        data: { "target": $("#target").val() },//要操作的工作表，這裡是運動紀錄(4)
         //dataType : "text",
 
         // 若成功，執行以下...

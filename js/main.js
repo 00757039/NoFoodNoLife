@@ -1,10 +1,11 @@
 var value = 0;
 $("#to_toggle").rotate({
-    bind:
-    {
+    bind: {
         click: function () {
             value += 180;
-            $(this).rotate({ animateTo: value })
+            $(this).rotate({
+                animateTo: value
+            })
         }
     }
 });
@@ -40,13 +41,13 @@ $("#toBodyScale").click(function () {
     value = 0;
     $("#showRecord").show();
     $("#to_toggle").rotate(value);
-    
+
     $("#body_scale").show();
     $("#sports_record").hide();
     $("#diet_record").hide();
 });
 
-$(function(){
+$(function () {
     $(".username").attr("value", receiveUserName());
     //console.log(receiveUserName());
 })
@@ -55,8 +56,14 @@ function receiveUserName() {
     var gottenUserName;
     var fromLogin = window.location.search;
     console.log(localStorage.getItem("username"));
-    if(fromLogin.indexOf("?") != 1) {
-        gottenUserName = fromLogin.substring(fromLogin.indexOf("=")+1); 
+    if (fromLogin.indexOf("?") != 1) {
+        gottenUserName = fromLogin.substring(fromLogin.indexOf("=") + 1);
     }
     return gottenUserName;
 }
+
+function logout() {
+    localStorage.clear();
+    window.location.href = "index.html";
+    console.log("登出成功");
+};

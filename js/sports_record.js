@@ -54,6 +54,7 @@ function setUpdateRowToggle(i) {
     $("#toUpdate" + String(i)).slideToggle();
 }
 
+//設定'修改表單'
 function setUpdate(i) {
     $("#username").attr("value", $("#toUpdate" + String(i) + 'username').val());
     $("#date").attr("value", $("#toUpdate" + String(i) + 'datetime-local').val().replace('T', ' '));
@@ -70,7 +71,7 @@ function display(formData) {
 
     // 先清空內容
     document.getElementById("table").innerHTML = "";
-    let content = '<table class="table"><thead><th>date&time</th><th>items</th><th>howlong</th><th>consume_cal</th></thead><tbody>';
+    let content = '<table class="table"><thead><th>date&time</th><th>items</th><th>howlong(hours)</th><th>consume_cal</th></thead><tbody>';
 
     // header 不需要繪製，所以 shift 掉
     formData.shift();
@@ -80,29 +81,7 @@ function display(formData) {
     let username = document.getElementsByClassName("username")[1];
     let date = document.getElementById("datepicker_r");
 
-    let data_howlong = [];
-    let data_consume_cal = 0;
-
-    let i1 = '';
-    let i2 = '';
-    let i3 = '';
-    let i4 = '';
-    let i5 = '';
-    i1 = formData[0][2];
-    for (let i in formData) {
-        if (formData[i][2] != i1) {
-            i2 = formData[i][2];
-        }
-        else if (formData[i][2] != i2) {
-            i3 = formData[i][2];
-        }
-        else if (formData[i][2] != i3) {
-            i4 = formData[i][2];
-        }
-        else if (formData[i][2] != i4) {
-            i5 = formData[i][2];
-        }
-    }
+    let data_howlong = [0, 0, 0, 0, 0, 0];
 
     let tr_css = '';
     let td_css = '';
@@ -137,24 +116,34 @@ function display(formData) {
                     '<input  type="text" name="target" value="4" hidden>' +
                     '<input id="toUpdate' + String(i) + 'username" class="username" name="username" value="' + localStorage.getItem("username") + '" hidden>' +
                     '<input id="toUpdate' + String(i) + 'datetime-local" type="datetime-local" name="datetime-local" value="">' +
-                    '<input id="toUpdate' + String(i) + 'items" type="text" name="items" value="' + formData[i][2] + '" placeholder="items">' +
-                    '<input id="toUpdate' + String(i) + 'howlong" type="number" name="howlong" value="' + formData[i][3] + '" placeholder="howlong" step="0.01">' +
+                    '<select id="toUpdate' + String(i) + 'items" name="items">' +
+                    '<option disabled selected>' + formData[i][2] + '</option>' +
+                    '<option>Jogging</option>' +
+                    '<option>Swimming</option>' +
+                    '<option>Fitness</option>' +
+                    '<option>Ball games</option>' +
+                    '<option>Yoga</option>' +
+                    '<option>Others...</option>' +
+                    '</select>' +
+                    '<input id="toUpdate' + String(i) + 'howlong" type="number" name="howlong" value="' + formData[i][3] + '" placeholder="howlong(hours)" step="0.01">' +
                     '<input id="toUpdate' + String(i) + 'consume_cal" type="number" name="consume_cal" value="' + formData[i][4] + '" placeholder="consume_cal" step="0.01">' +
                     '<input type="button" value="update" onclick="setUpdate(' + String(i) + ');"></form></td></tr>';
 
                 switch (formData[i][2]) {
-                    case i1: data_howlong[1] += formData[i][3];
+                    case 'Jogging': data_howlong[0] += formData[i][3];
                         break;
-                    case i2: data_howlong[2] += formData[i][3];
+                    case 'Swimming': data_howlong[1] += formData[i][3];
                         break;
-                    case i3: data_howlong[3] += formData[i][3];
+                    case 'Fitness': data_howlong[2] += formData[i][3];
                         break;
-                    case i4: data_howlong[4] += formData[i][3];
+                    case 'Ball games': data_howlong[3] += formData[i][3];
                         break;
-                    case i5: data_howlong[5] += formData[i][3];
+                    case 'Yoga': data_howlong[4] += formData[i][3];
+                        break;
+                    case 'Others...': data_howlong[5] += formData[i][3];
                         break;
                 }
-                data_consume_cal += parseFloat(formData[i][4]);
+                //data_consume_cal += parseFloat(formData[i][4]);
             }
         }
     }
@@ -189,24 +178,34 @@ function display(formData) {
                     '<input  type="text" name="target" value="4" hidden>' +
                     '<input id="toUpdate' + String(i) + 'username" class="username" name="username" value="' + localStorage.getItem("username") + '" hidden>' +
                     '<input id="toUpdate' + String(i) + 'datetime-local" type="datetime-local" name="datetime-local" value="">' +
-                    '<input id="toUpdate' + String(i) + 'items" type="text" name="items" value="' + formData[i][2] + '" placeholder="items">' +
-                    '<input id="toUpdate' + String(i) + 'howlong" type="number" name="howlong" value="' + formData[i][3] + '" placeholder="howlong" step="0.01">' +
+                    '<select id="toUpdate' + String(i) + 'items" name="items">' +
+                    '<option disabled selected>' + formData[i][2] + '</option>' +
+                    '<option>Jogging</option>' +
+                    '<option>Swimming</option>' +
+                    '<option>Fitness</option>' +
+                    '<option>Ball games</option>' +
+                    '<option>Yoga</option>' +
+                    '<option>Others...</option>' +
+                    '</select>' +
+                    '<input id="toUpdate' + String(i) + 'howlong" type="number" name="howlong" value="' + formData[i][3] + '" placeholder="howlong(hours)" step="0.01">' +
                     '<input id="toUpdate' + String(i) + 'consume_cal" type="number" name="consume_cal" value="' + formData[i][4] + '" placeholder="consume_cal" step="0.01">' +
                     '<input type="button" value="update" onclick="setUpdate(' + String(i) + ');"></form></td></tr>';
 
                 switch (formData[i][2]) {
-                    case i1: data_howlong[1] += formData[i][3];
+                    case 'Jogging': data_howlong[0] += formData[i][3];
                         break;
-                    case i2: data_howlong[2] += formData[i][3];
+                    case 'Swimming': data_howlong[1] += formData[i][3];
                         break;
-                    case i3: data_howlong[3] += formData[i][3];
+                    case 'Fitness': data_howlong[2] += formData[i][3];
                         break;
-                    case i4: data_howlong[4] += formData[i][3];
+                    case 'Ball games': data_howlong[3] += formData[i][3];
                         break;
-                    case i5: data_howlong[5] += formData[i][3];
+                    case 'Yoga': data_howlong[4] += formData[i][3];
+                        break;
+                    case 'Others...': data_howlong[5] += formData[i][3];
                         break;
                 }
-                data_consume_cal += parseFloat(formData[i][4]);
+                //data_consume_cal += parseFloat(formData[i][4]);
             }
         }
     }
@@ -226,8 +225,8 @@ function display(formData) {
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Items', 'hour(s)'],
-                [i1, data_howlong[1]], [i2, data_howlong[2]], [i3, data_howlong[3]],
-                [i4, data_howlong[4]], [i5, data_howlong[5]],
+                ['Jogging', data_howlong[0]], ['Swimming', data_howlong[1]], ['Fitness', data_howlong[2]],
+                ['Ball games', data_howlong[3]], ['Yoga', data_howlong[4]],['Others...', data_howlong[5]],
             ]);
 
             var options = {
@@ -250,12 +249,13 @@ function display(formData) {
             chart.draw(data, options);
         }
     }
-    else { }
+    else {
+        document.getElementById('piechart').innerHTML = 'Data is not complite.'
+    }
 }
 
 // CREATE
 document.forms['create'].addEventListener('submit', e => {
-    console.log($('#datepicker').val());
     let dt = $('#datepicker_c').val();
     $('.date').attr('value', dt.replace('T', ' '));
     e.preventDefault();
