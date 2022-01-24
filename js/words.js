@@ -61,7 +61,7 @@ function setUpdate(i) {
     $("#updateRow").attr("value", $("#toUpdate" + String(i) + 'updateRow').val());
     $("#message").attr("value", $("#toUpdate" + String(i) + 'message').val());
     $("#by_name").attr("value", $("#toUpdate" + String(i) + 'by_name').val());
-    
+
     $("#submitUp").click();
 }
 
@@ -83,75 +83,46 @@ function display(formData) {
     let tr_css = '';
     let td_css = '';
 
+    formData.sort(function (x, y) {//照時間排序
+        return -(x[1].localeCompare(y[1]));
+    })
+
     //沒有日期就輸出全部，有則輸出指定日期資料
-    if (date.value == "") {
-        for (let i in formData) {
-            switch (i % 4) {
-                case 0: tr_css = '<tr class="table-primary" id="' + i + '_th_tr">';
-                    td_css = '<td class="table-primary">';
-                    break;
-                case 1: tr_css = '<tr class="table-success" id="' + i + '_th_tr">';
-                    td_css = '<td class="table-success">';
-                    break;
-                case 2: tr_css = '<tr class="table-danger" id="' + i + '_th_tr">';
-                    td_css = '<td class="table-danger">';
-                    break;
-                case 3: tr_css = '<tr class="table-warning" id="' + i + '_th_tr">';
-                    td_css = '<td class="table-warning">';
-                    break;
-            }
-
-            if (formData[i][0] == username.value) {
-                content += tr_css + td_css + '<button class="btn btn-danger" onclick="setDeleteRow(' + i + ');">delete</button>    '
-                    + '<button class="btn btn-dark" onclick="setUpdateRowToggle(' + String(i) + ');">update</button><br>' + formData[i][1] + "</td>";
-                content += td_css + formData[i][2] + "</td>";
-                content += td_css + formData[i][3] + "</td>";
-                content += '<tr><td colspan=8><form id="toUpdate' + String(i) + '" name="update_to_linked_form" style="display: none">' +
-                    '<input type="text" name="method" value="UPDATE" hidden>' +
-                    '<input id="toUpdate' + String(i) + 'updateRow" type="number" name="updateRow" placeholder="updateRow" value="' + String(i) + '" hidden>' +
-                    '<input  type="text" name="target" value="3" hidden>' +
-                    '<input id="toUpdate' + String(i) + 'username" class="username" name="username" value="' + localStorage.getItem("username") + '" hidden>' +
-                    '<input id="toUpdate' + String(i) + 'datetime-local" type="datetime-local" name="datetime-local" value="">' +
-                    '<input id="toUpdate' + String(i) + 'message" type="text" name="message" value="' + formData[i][2] + '" placeholder="message" required>' +
-                    '<input id="toUpdate' + String(i) + 'by_name" type="text" name="by_name" value="' + formData[i][3] + '" placeholder="by_name" required>' +
-                    '<input type="button" value="update" onclick="setUpdate(' + String(i) + ');"></form></td></tr>';
-            }
+    for (let i in formData) {
+        switch (i % 4) {
+            case 0: tr_css = '<tr class="table-primary" id="' + i + '_th_tr">';
+                td_css = '<td class="table-primary">';
+                break;
+            case 1: tr_css = '<tr class="table-success" id="' + i + '_th_tr">';
+                td_css = '<td class="table-success">';
+                break;
+            case 2: tr_css = '<tr class="table-danger" id="' + i + '_th_tr">';
+                td_css = '<td class="table-danger">';
+                break;
+            case 3: tr_css = '<tr class="table-warning" id="' + i + '_th_tr">';
+                td_css = '<td class="table-warning">';
+                break;
         }
-    }
-    else {
-        for (let i in formData) {
-            console.log(date.value);
-            console.log(formData[i][1].substr(0, 10));
 
-            switch (i % 4) {
-                case 0: tr_css = '<tr class="table-primary">';
-                    td_css = '<td class="table-primary">';
-                    break;
-                case 1: tr_css = '<tr class="table-success">';
-                    td_css = '<td class="table-success">';
-                    break;
-                case 2: tr_css = '<tr class="table-danger">';
-                    td_css = '<td class="table-danger">';
-                    break;
-                case 3: tr_css = '<tr class="table-warning">';
-                    td_css = '<td class="table-warning">';
-                    break;
-            }
-            if (formData[i][0] == username.value && formData[i][1].substr(0, 10) == date.value.substr(0, 10)) {
-                content += tr_css + td_css + '<button class="btn btn-danger" onclick="setDeleteRow(' + i + ');">delete</button>    '
-                    + '<button class="btn btn-dark" onclick="setUpdateRowToggle(' + String(i) + ');">update</button><br>' + formData[i][1] + "</td>";
-                content += td_css + formData[i][2] + "</td>";
-                content += td_css + formData[i][3] + "</td>";
-                content += '<tr><td colspan=8><form id="toUpdate' + String(i) + '" name="update_to_linked_form" style="display: none">' +
-                    '<input type="text" name="method" value="UPDATE" hidden>' +
-                    '<input id="toUpdate' + String(i) + 'updateRow" type="number" name="updateRow" placeholder="updateRow" value="' + String(i) + '" hidden>' +
-                    '<input  type="text" name="target" value="3" hidden>' +
-                    '<input id="toUpdate' + String(i) + 'username" class="username" name="username" value="' + localStorage.getItem("username") + '" hidden>' +
-                    '<input id="toUpdate' + String(i) + 'datetime-local" type="datetime-local" name="datetime-local" value="">' +
-                    '<input id="toUpdate' + String(i) + 'message" type="text" name="message" value="' + formData[i][2] + '" placeholder="message" required>' +
-                    '<input id="toUpdate' + String(i) + 'by_name" type="text" name="by_name" value="' + formData[i][3] + '" placeholder="by_name" required>' +
-                    '<input type="button" value="update" onclick="setUpdate(' + String(i) + ');"></form></td></tr>';
-            }
+        if (formData[i][0] == username.value) {
+            content += tr_css + td_css + '<button class="btn btn-danger" onclick="setDeleteRow(' + i + ');">delete</button>    '
+                + '<button class="btn btn-dark" onclick="setUpdateRowToggle(' + String(i) + ');">update</button><br>' + formData[i][1] + "</td>";
+        }
+        else {
+            content += tr_css + td_css + formData[i][1] + "</td>";
+        }
+
+        content += td_css + formData[i][2] + "</td>";
+        content += td_css + formData[i][0] + "</td>";
+        if (formData[i][0] == username.value) {
+            content += '<tr><td colspan=8><form id="toUpdate' + String(i) + '" name="update_to_linked_form" style="display: none">' +
+                '<input type="text" name="method" value="UPDATE" hidden>' +
+                '<input id="toUpdate' + String(i) + 'updateRow" type="number" name="updateRow" placeholder="updateRow" value="' + String(i) + '" hidden>' +
+                '<input  type="text" name="target" value="3" hidden>' +
+                '<input id="toUpdate' + String(i) + 'username" class="username" name="username" value="' + localStorage.getItem("username") + '" hidden>' +
+                '<input id="toUpdate' + String(i) + 'datetime-local" type="datetime-local" name="datetime-local" value="">' +
+                '<input id="toUpdate' + String(i) + 'message" type="text" name="message" value="' + formData[i][2] + '" placeholder="message" required>' +
+                '<input type="button" value="update" onclick="setUpdate(' + String(i) + ');"></form></td></tr>';
         }
     }
 

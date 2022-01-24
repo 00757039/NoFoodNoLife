@@ -70,7 +70,8 @@
     <br>
     <h2>diet record</h2>
     <div style="width:100%; display: flex; justify-content: center; align-items: center;">
-        <div id="piechart" style="width: 900px; height: 500px; margin: 0px auto;"></div>
+        <div id="piechart1" style="width: 45%; height: 500px; margin: 0px auto;"></div>
+        <div id="piechart2" style="width: 45%; height: 500px; margin: 0px auto;"></div>
     </div>
     
     <br>
@@ -93,12 +94,11 @@
                         <input type="datetime-local" id="datepicker_c" name="datetime-local" required>
                         <input type="text" class="date" name="date&time" hidden>
                         <input type="text" name="food_name" value="" placeholder="food name" required>
-                        <input type="number" name="cal" value="" placeholder="cal(g)" required step="0.01">
                         <input type="number" name="protein" value="" placeholder="protein(g)" required step="0.01">
                         <input type="number" name="fat" value="" placeholder="fat(g)" step="0.01">
                         <input type="number" name="carbohydrate" value="" placeholder="carbohydrate(g)" required step="0.01">
                         <input type="number" name="sugar" value="" placeholder="sugar(g)" required step="0.01">
-                        <input type="number" name="nacl" value="" placeholder="nacl(g)" required step="0.01">
+                        <input type="number" name="sodium" value="" placeholder="sodium(g)" required step="0.01">
 
                         <input type="submit" class="btn btn-info" value="create">
                     </form>
@@ -163,12 +163,11 @@
         <input type="text" name="method" value="UPDATE" hidden>
         <input id="updateRow" type="number" name="updateRow" placeholder="updateRow">
         <input id="foodname" type="text" name="food_name" value="" placeholder="food name">
-        <input id="cal" type="number" name="cal" value="" placeholder="cal(g)">
         <input id="protein" type="number" name="protein" value="" placeholder="protein(g)">
         <input id="fat" type="number" name="fat" value="" placeholder="fat(g)">
         <input id="carbohydrate" type="number" name="carbohydrate" value="" placeholder="carbohydrate(g)">
         <input id="sugar" type="number" name="sugar" value="" placeholder="sugar(g)">
-        <input id="nacl" type="number" name="nacl" value="" placeholder="nacl(g)">
+        <input id="sodium" type="number" name="sodium" value="" placeholder="sodium(g)">
 
         <input id="submitUp" type="submit" value="update">
     </form>

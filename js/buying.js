@@ -83,6 +83,10 @@ function display(formData) {
     let tr_css = '';
     let td_css = '';
 
+    formData.sort(function(x,y){//照時間排序
+        return -(x[1].localeCompare(y[1]));
+    })
+
     //沒有日期就輸出全部，有則輸出指定日期資料
     if (date.value == "") {
         for (let i in formData) {

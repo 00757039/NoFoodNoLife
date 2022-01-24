@@ -61,7 +61,6 @@ function setUpdate(i) {
     $("#updateRow").attr("value", $("#toUpdate" + String(i) + 'updateRow').val());
     $("#items").attr("value", $("#toUpdate" + String(i) + 'items').val());
     $("#howlong").attr("value", $("#toUpdate" + String(i) + 'howlong').val());
-    $("#consume_cal").attr("value", $("#toUpdate" + String(i) + 'consume_cal').val());
 
     $("#submitUp").click();
 }
@@ -71,7 +70,7 @@ function display(formData) {
 
     // 先清空內容
     document.getElementById("table").innerHTML = "";
-    let content = '<table class="table"><thead><th>date&time</th><th>items</th><th>howlong(hours)</th><th>consume_cal</th></thead><tbody>';
+    let content = '<table class="table"><thead><th>date&time</th><th>items</th><th>howlong(hours)</th></thead><tbody>';
 
     // header 不需要繪製，所以 shift 掉
     formData.shift();
@@ -85,6 +84,10 @@ function display(formData) {
 
     let tr_css = '';
     let td_css = '';
+
+    formData.sort(function(x,y){//照時間排序
+        return -(x[1].localeCompare(y[1]));
+    })
 
     //沒有日期就輸出全部，有則輸出指定日期資料
     if (date.value == "") {
@@ -109,7 +112,6 @@ function display(formData) {
                     + '<button class="btn btn-dark" onclick="setUpdateRowToggle(' + String(i) + ');">update</button><br>' + formData[i][1] + "</td>";
                 content += td_css + formData[i][2] + "</td>";
                 content += td_css + formData[i][3] + "</td>";
-                content += td_css + formData[i][4] + "</td>";
                 content += '<tr><td colspan=8><form id="toUpdate' + String(i) + '" name="update_to_linked_form" style="display: none">' +
                     '<input type="text" name="method" value="UPDATE" hidden>' +
                     '<input id="toUpdate' + String(i) + 'updateRow" type="number" name="updateRow" placeholder="updateRow" value="' + String(i) + '" hidden>' +
@@ -126,7 +128,6 @@ function display(formData) {
                     '<option>Others...</option>' +
                     '</select>' +
                     '<input id="toUpdate' + String(i) + 'howlong" type="number" name="howlong" value="' + formData[i][3] + '" placeholder="howlong(hours)" step="0.01">' +
-                    '<input id="toUpdate' + String(i) + 'consume_cal" type="number" name="consume_cal" value="' + formData[i][4] + '" placeholder="consume_cal" step="0.01">' +
                     '<input type="button" value="update" onclick="setUpdate(' + String(i) + ');"></form></td></tr>';
 
                 switch (formData[i][2]) {
@@ -171,7 +172,6 @@ function display(formData) {
                     + '<button class="btn btn-dark" onclick="setUpdateRowToggle(' + String(i) + ');">update</button><br>' + formData[i][1] + "</td>";
                 content += td_css + formData[i][2] + "</td>";
                 content += td_css + formData[i][3] + "</td>";
-                content += td_css + formData[i][4] + "</td>";
                 content += '<tr><td colspan=8><form id="toUpdate' + String(i) + '" name="update_to_linked_form" style="display: none">' +
                     '<input type="text" name="method" value="UPDATE" hidden>' +
                     '<input id="toUpdate' + String(i) + 'updateRow" type="number" name="updateRow" placeholder="updateRow" value="' + String(i) + '" hidden>' +
@@ -188,7 +188,6 @@ function display(formData) {
                     '<option>Others...</option>' +
                     '</select>' +
                     '<input id="toUpdate' + String(i) + 'howlong" type="number" name="howlong" value="' + formData[i][3] + '" placeholder="howlong(hours)" step="0.01">' +
-                    '<input id="toUpdate' + String(i) + 'consume_cal" type="number" name="consume_cal" value="' + formData[i][4] + '" placeholder="consume_cal" step="0.01">' +
                     '<input type="button" value="update" onclick="setUpdate(' + String(i) + ');"></form></td></tr>';
 
                 switch (formData[i][2]) {

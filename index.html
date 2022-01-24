@@ -53,8 +53,11 @@
         }
 
         .table {
+            width: 20%;
             display: flex;
             justify-content: center;
+            text-align: center;
+            margin: 0 auto;
         }
 
         table,
@@ -99,13 +102,14 @@
                     </div>
                     <div class="password">
                         <h3>Password</h3>
-                        <input id="readName2" type="text" name="password" placeholder="password">
+                        <input id="readName2" type="password" name="password" placeholder="password">
                     </div>
-                    <div class="button" style='align-items: center;'>
-                        <a onclick="toggle()">Sign up?</a>
-                        <input type="submit" value="confirm">
+                    <div class="button" style="text-align: center; width: 100%; margin:0px auto;">
+                        <a onclick="toggle()" style="margin:0px auto;">Sign up?</a>
+                        <input type="submit" value="confirm" style="margin:0px auto;">
                     </div>
                 </form>
+                <a href="網站說明.pptx" download="網站說明.pptx">網站說明</a>
             </div>
         </div>
     </div>
@@ -125,17 +129,18 @@
                         <h3>Password</h3>
                         <input id="createName2" type="text" name="password" placeholder="password">
                     </div>
-                    <div class="button" style='align-items: center;'>
-                        <a onclick="toggle()">Log in!</a>
-                        <input type="submit" value="confirm">
+                    <div class="button" style="text-align: center; width: 100%; margin:0px auto;">
+                        <a onclick="toggle()" style="margin:0px auto;">Log in!</a>
+                        <input type="submit" value="confirm" style="margin:0px auto;">
                     </div>
                 </form>
+                <a href="網站說明.pptx" download="網站說明.pptx">網站說明</a>
             </div>
         </div>
     </div>
 
     <br>
-    <div id="table" class="table"></div>
+    <div id="table" class="table" style="background-color: rgba(240, 240, 240, 0.8);"></div>
 
     <script src="js/login.js" type="text/javascript"></script>
 </body>

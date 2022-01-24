@@ -60,12 +60,12 @@ function setUpdate(i) {
     $("#date").attr("value", $("#toUpdate" + String(i) + 'datetime-local').val().replace('T', ' '));
     $("#updateRow").attr("value", $("#toUpdate" + String(i) + 'updateRow').val());
     $("#foodname").attr("value", $("#toUpdate" + String(i) + 'food_name').val());
-    $("#cal").attr("value", $("#toUpdate" + String(i) + 'cal').val());
+    $("#calorie").attr("value", $("#toUpdate" + String(i) + 'calorie').val());
     $("#protein").attr("value", $("#toUpdate" + String(i) + 'protein').val());
     $("#fat").attr("value", $("#toUpdate" + String(i) + 'fat').val());
     $("#carbohydrate").attr("value", $("#toUpdate" + String(i) + 'carbohydrate').val());
     $("#sugar").attr("value", $("#toUpdate" + String(i) + 'sugar').val());
-    $("#nacl").attr("value", $("#toUpdate" + String(i) + 'nacl').val());
+    $("#sodium").attr("value", $("#toUpdate" + String(i) + 'sodium').val());
     $("#submitUp").click();
 }
 
@@ -74,7 +74,7 @@ function display(formData) {
 
     // 先清空內容
     document.getElementById("table").innerHTML = "";
-    let content = '<table class="table"><thead><th>date&time</th><th>food_name</th><th>cal</th><th>protein</th><th>fat</th><th>carbohydrate</th><th>sugar</th><th>nacl</th></thead><tbody>';
+    let content = '<table class="table"><thead><th>date&time</th><th>food_name</th><th>calorie(Kcal)</th><th>protein(g)</th><th>fat(g)</th><th>carbohydrate(g)</th><th>sugar(g)</th><th>sodium(g)</th></thead><tbody>';
 
     // header 不需要繪製，所以 shift 掉
     formData.shift();
@@ -85,15 +85,19 @@ function display(formData) {
     let date = document.getElementById("datepicker_r");
     console.log(date.value);
 
-    let data_cal = 0;
+    let data_calorie = 0;
     let data_protein = 0;
     let data_fat = 0;
     let data_carbohydrate = 0;
     let data_sugar = 0;
-    let data_nacl = 0;
+    let data_sodium = 0;
 
     let tr_css = '';
     let td_css = '';
+
+    formData.sort(function(x,y){//照時間排序
+        return -(x[1].localeCompare(y[1]));
+    })
 
     //沒有日期就輸出全部，有則輸出指定日期資料
     if (date.value == "") {
@@ -114,15 +118,16 @@ function display(formData) {
             }
 
             if (formData[i][0] == username.value) {
+                let Calorie = formData[i][3] * 4 + formData[i][4] * 9 + formData[i][5] * 4;
                 content += tr_css + td_css + '<button class="btn btn-danger" onclick="setDeleteRow(' + i + ');">delete</button>    '
                     + '<button class="btn btn-dark" onclick="setUpdateRowToggle(' + String(i) + ');">update</button><br>' + formData[i][1] + "</td>";
                 content += td_css + formData[i][2] + "</td>";
+                content += td_css + Calorie + "</td>";
                 content += td_css + formData[i][3] + "</td>";
                 content += td_css + formData[i][4] + "</td>";
                 content += td_css + formData[i][5] + "</td>";
                 content += td_css + formData[i][6] + "</td>";
-                content += td_css + formData[i][7] + "</td>";
-                content += td_css + formData[i][8] + "</td></tr>";
+                content += td_css + formData[i][7] + "</td></tr>";
                 content += '<tr><td colspan=8><form id="toUpdate' + String(i) + '" name="update_to_linked_form" style="display: none">' +
                 '<input type="text" name="method" value="UPDATE" hidden>' +
                 '<input id="toUpdate' + String(i) + 'updateRow" type="number" name="updateRow" placeholder="updateRow" value="' + String(i) + '" hidden>' +
@@ -130,20 +135,19 @@ function display(formData) {
                 '<input id="toUpdate' + String(i) + 'username" class="username" name="username" value="' + localStorage.getItem("username") + '" hidden>' +
                 '<input id="toUpdate' + String(i) + 'datetime-local" type="datetime-local" name="datetime-local" value="">' +
                 '<input id="toUpdate' + String(i) + 'food_name" type="text" name="food_name" value="' + formData[i][2] + '" placeholder="food name">' +
-                '<input id="toUpdate' + String(i) + 'cal" type="number" name="cal" value="' + formData[i][3] + '" placeholder="cal(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'protein" type="number" name="protein" value="' + formData[i][4] + '" placeholder="protein(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'fat" type="number" name="fat" value="' + formData[i][5] + '" placeholder="fat(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'carbohydrate" type="number" name="carbohydrate" value="' + formData[i][6] + '" placeholder="carbohydrate(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'sugar" type="number" name="sugar" value="' + formData[i][7] + '" placeholder="sugar(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'nacl" type="number" name="nacl" value="' + formData[i][8] + '" placeholder="nacl(g)" step="0.01">' +
+                '<input id="toUpdate' + String(i) + 'protein" type="number" name="protein" value="' + formData[i][3] + '" placeholder="protein(g)" step="0.01">' +
+                '<input id="toUpdate' + String(i) + 'fat" type="number" name="fat" value="' + formData[i][4] + '" placeholder="fat(g)" step="0.01">' +
+                '<input id="toUpdate' + String(i) + 'carbohydrate" type="number" name="carbohydrate" value="' + formData[i][5] + '" placeholder="carbohydrate(g)" step="0.01">' +
+                '<input id="toUpdate' + String(i) + 'sugar" type="number" name="sugar" value="' + formData[i][6] + '" placeholder="sugar(g)" step="0.01">' +
+                '<input id="toUpdate' + String(i) + 'sodium" type="number" name="sodium" value="' + formData[i][7] + '" placeholder="sodium(g)" step="0.01">' +
                 '<input type="button" value="update" onclick="setUpdate(' + String(i) + ');"></form></td></tr>';
 
-                data_cal += parseFloat(formData[i][3]);
-                data_protein += parseFloat(formData[i][4]);
-                data_fat += parseFloat(formData[i][5]);
-                data_carbohydrate += parseFloat(formData[i][6]);
-                data_sugar += parseFloat(formData[i][7]);
-                data_nacl += parseFloat(formData[i][8]);
+                data_calorie += Calorie;
+                data_protein += parseFloat(formData[i][3]);
+                data_fat += parseFloat(formData[i][4]);
+                data_carbohydrate += parseFloat(formData[i][5]);
+                data_sugar += parseFloat(formData[i][6]);
+                data_sodium += parseFloat(formData[i][7]);
             }
         }
     }
@@ -167,15 +171,16 @@ function display(formData) {
                     break;
             }
             if (formData[i][0] == username.value && formData[i][1].substr(0, 10) == date.value.substr(0, 10)) {
+                let Calorie = formData[i][3] * 4 + formData[i][4] * 9 + formData[i][5] * 4;
                 content += tr_css + td_css + '<button class="btn btn-danger" onclick="setDeleteRow(' + i + ');">delete</button>    '
                     + '<button class="btn btn-dark" onclick="setUpdateRowToggle(' + String(i) + ');">update</button><br>' + formData[i][1] + "</td>";
                 content += td_css + formData[i][2] + "</td>";
+                content += td_css + Calorie + "</td>";
                 content += td_css + formData[i][3] + "</td>";
                 content += td_css + formData[i][4] + "</td>";
                 content += td_css + formData[i][5] + "</td>";
                 content += td_css + formData[i][6] + "</td>";
-                content += td_css + formData[i][7] + "</td>";
-                content += td_css + formData[i][8] + "</td></tr>";
+                content += td_css + formData[i][7] + "</td></tr>";
                 content += '<tr><td colspan=8><form id="toUpdate' + String(i) + '" name="update_to_linked_form" style="display: none">' +
                 '<input type="text" name="method" value="UPDATE" hidden>' +
                 '<input id="toUpdate' + String(i) + 'updateRow" type="number" name="updateRow" placeholder="updateRow" value="' + String(i) + '" hidden>' +
@@ -183,20 +188,19 @@ function display(formData) {
                 '<input id="toUpdate' + String(i) + 'username" class="username" name="username" value="' + localStorage.getItem("username") + '" hidden>' +
                 '<input id="toUpdate' + String(i) + 'datetime-local" type="datetime-local" name="datetime-local" value="">' +
                 '<input id="toUpdate' + String(i) + 'food_name" type="text" name="food_name" value="' + formData[i][2] + '" placeholder="food name">' +
-                '<input id="toUpdate' + String(i) + 'cal" type="number" name="cal" value="' + formData[i][3] + '" placeholder="cal(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'protein" type="number" name="protein" value="' + formData[i][4] + '" placeholder="protein(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'fat" type="number" name="fat" value="' + formData[i][5] + '" placeholder="fat(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'carbohydrate" type="number" name="carbohydrate" value="' + formData[i][6] + '" placeholder="carbohydrate(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'sugar" type="number" name="sugar" value="' + formData[i][7] + '" placeholder="sugar(g)" step="0.01">' +
-                '<input id="toUpdate' + String(i) + 'nacl" type="number" name="nacl" value="' + formData[i][8] + '" placeholder="nacl(g)" step="0.01">' +
+                '<input id="toUpdate' + String(i) + 'protein" type="number" name="protein" value="' + formData[i][3] + '" placeholder="protein(g)" step="0.01">' +
+                '<input id="toUpdate' + String(i) + 'fat" type="number" name="fat" value="' + formData[i][4] + '" placeholder="fat(g)" step="0.01">' +
+                '<input id="toUpdate' + String(i) + 'carbohydrate" type="number" name="carbohydrate" value="' + formData[i][5] + '" placeholder="carbohydrate(g)" step="0.01">' +
+                '<input id="toUpdate' + String(i) + 'sugar" type="number" name="sugar" value="' + formData[i][6] + '" placeholder="sugar(g)" step="0.01">' +
+                '<input id="toUpdate' + String(i) + 'sodium" type="number" name="sodium" value="' + formData[i][7] + '" placeholder="sodium(g)" step="0.01">' +
                 '<input type="button" value="update" onclick="setUpdate(' + String(i) + ');"></form></td></tr>';
 
-                data_cal += parseFloat(formData[i][3]);
-                data_protein += parseFloat(formData[i][4]);
-                data_fat += parseFloat(formData[i][5]);
-                data_carbohydrate += parseFloat(formData[i][6]);
-                data_sugar += parseFloat(formData[i][7]);
-                data_nacl += parseFloat(formData[i][8]);
+                data_calorie += Calorie;
+                data_protein += parseFloat(formData[i][3]);
+                data_fat += parseFloat(formData[i][4]);
+                data_carbohydrate += parseFloat(formData[i][5]);
+                data_sugar += parseFloat(formData[i][6]);
+                data_sodium += parseFloat(formData[i][7]);
             }
         }
     }
@@ -212,13 +216,14 @@ function display(formData) {
     //chart展示
     if (hasResault > -1) {
         google.charts.load("current", { packages: ["corechart"] });
-        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChart1);
+        google.charts.setOnLoadCallback(drawChart2);
 
-        function drawChart() {
+        function drawChart1() {
             var data = google.visualization.arrayToDataTable([
                 ['Nutrition', 'gram(s)'],
-                ['Cal', data_cal], ['Protein', data_protein], ['Fat', data_fat],
-                ['Carbohydrate', data_carbohydrate], ['Sugar', data_sugar], ['Nacl', data_nacl],
+                ['Protein', data_protein], ['Fat', data_fat],
+                ['Carbohydrate', data_carbohydrate], ['Sugar', data_sugar], ['sodium', data_sodium],
             ]);
 
             var options = {
@@ -237,12 +242,40 @@ function display(formData) {
                 },
             };
 
-            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            var chart = new google.visualization.PieChart(document.getElementById('piechart1'));
+            chart.draw(data, options);
+        }
+
+        function drawChart2() {
+            var data = google.visualization.arrayToDataTable([
+                ['Calorie', '(kcal)'],
+                ['Protein', data_protein], ['Fat', data_fat],
+                ['Carbohydrate', data_carbohydrate],
+            ]);
+
+            var options = {
+                title: 'Calories You Got By Eating.',
+                //legend: 'none',
+                pieSliceText: 'label',
+                width: 900,
+                height: 500,
+                pieHole: 0.4,
+
+                slices: {
+                    4: { offset: 0.2 },
+                    12: { offset: 0.3 },
+                    14: { offset: 0.4 },
+                    15: { offset: 0.5 },
+                },
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
             chart.draw(data, options);
         }
     }
     else {
-        document.getElementById('piechart').innerHTML = 'Data is not complite.'
+        document.getElementById('piechart1').innerHTML = 'Data is not complite.';
+        document.getElementById('piechart2').innerHTML = 'Data is not complite.';
     }
 }
 

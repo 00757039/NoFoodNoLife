@@ -90,7 +90,6 @@
                         <input type="datetime-local" id="datepicker_c" name="datetime-local" required>
                         <input type="text" class="date" name="date&time" hidden>
                         <input type="text" name="message" value="" placeholder="message" required>
-                        <input type="text" name="by_name" value="" placeholder="by_name" required>
 
                         <input type="submit" class="btn btn-info" value="create">
                     </form>
@@ -111,11 +110,9 @@
                     <form id="toRead" name="read">
                         <input id="target" type="text" name="target" value="6" hidden>
                         <input class="username" name="username" value="" hidden>
-                        <input type="datetime-local" id="datepicker_r" name="datetime-local">
+                        <input type="datetime-local" id="datepicker_r" name="datetime-local" hidden>
                         <input type="text" class="date" name="date&time" hidden>
 
-                        <h4><span class="badge badge-secondary">At the top, please input the date you want. Or directly
-                            read for all records.</span></h4>
                         <input id="toRead" class="btn btn-info" type="submit" value="read">
                     </form>
                 </div>
@@ -155,7 +152,6 @@
         <input type="text" name="method" value="UPDATE" hidden>
         <input id="updateRow" type="number" name="updateRow" placeholder="updateRow">
         <input id="message" type="text" name="message" value="" placeholder="message">
-        <input id="by_name" type="number" name="by_name" value="" placeholder="by_name">
 
         <input id="submitUp" type="submit" value="update">
     </form>

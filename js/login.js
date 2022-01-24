@@ -76,7 +76,7 @@ function display(formData) {
 
 	// 若 input 元素為空值，則繪製整張表格
 	if (readName.value == "" || readName2.value == "") {
-		content = "Please input your username or password!!!";
+		content = "Please input your username and password!!!";
 		document.getElementById("table").innerHTML = content;
 
 		// 若不為空，則繪製指定的 row
@@ -84,16 +84,16 @@ function display(formData) {
 		for (let i in formData) {
 			if (formData[i][0] == readName.value && formData[i][1] == readName2.value) {
 				localStorage.setItem("username", formData[i][0]);
-				console.log("存username");
-				content = formData[i][0];
+				content = formData[i][0] + ', welcome!';
 				window.location.href = "main.html?ToSend=" + content;
 				break;
 			};
 		}
 		if (content == "") {
-			content = "There is something wrong, maybe your username or password!!!"
+			content = "Your username or password is incorrect!!!"
 		}
 		//var usernameToSend = $("#table").innerHTML;
+		window.alert(content);
 		document.getElementById("table").innerHTML = content;
 	}
 }
@@ -131,7 +131,7 @@ function checkIsVaild(response, invaild) {//檢查帳號是否被使用
 	let content = "";
 	console.log(response);
 	if (createName.value == "" || createName2.value == "") {
-		content = "Please input your username or password to create!!!"
+		content = "Please input your username and password to create!!!";
 		invaild = 1;
 	}
 	else {
@@ -145,6 +145,7 @@ function checkIsVaild(response, invaild) {//檢查帳號是否被使用
 		}
 	}
 	document.getElementById("table").innerHTML = content;
+	window.alert(content);
 	return invaild;
 }
 function createUser() {
@@ -156,7 +157,7 @@ function createUser() {
 		processData: false,
 		success: function (response) {
 			console.log(response);
-			alert("create 成功");
+			//alert("create 成功");
 			//readMethod(e);
 		},
 		error: function () {
@@ -167,7 +168,7 @@ function createUser() {
 	// 送出表單後清空 input 的值
 	document.forms['create'].reset();
 	//change method to log in
-	window.alert("Please log in again!");
+	window.alert("Success! Please log in again!");
 	$("#login").show();
 	$("#signup").hide();
 }

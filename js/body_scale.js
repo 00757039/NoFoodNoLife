@@ -87,6 +87,12 @@ function display(formData) {
     let tr_css = '';
     let td_css = '';
 
+    let a = 9;
+
+    formData.sort(function (x, y) {//照時間排序
+        return -(x[1].localeCompare(y[1]));
+    })
+
     //輸出最近十筆資料
     for (let i in formData) {
         switch (i % 4) {
@@ -121,12 +127,12 @@ function display(formData) {
                 '<input id="toUpdate' + String(i) + 'weight" type="number" name="weight" value="' + formData[i][3] + '" placeholder="weight" required step="0.01">' +
                 '<input type="button" value="update" onclick="setUpdate(' + String(i) + ');"></form></td></tr>';
 
-            if(i < 10) {
-                date[i] = formData[i][1].substr(0, 10);
-                height[i] = formData[i][2];
-                weight[i] = formData[i][3];
-                BMI[i] = bmi;
-            }
+
+            date[a] = formData[i][1].substr(0, 10);
+            height[a] = formData[i][2];
+            weight[a] = formData[i][3];
+            BMI[a] = bmi;
+            a--;
         }
     }
 
@@ -139,41 +145,111 @@ function display(formData) {
 
     //chart展示
     if (hasResault > -1) {
-        google.charts.load('current', { 'packages': ['line'] });
-        google.charts.setOnLoadCallback(drawChart);
+        google.charts.load('current', { packages: ['corechart', 'line'] });
+        google.charts.setOnLoadCallback(drawChart_weight);
+        google.charts.setOnLoadCallback(drawChart_height);
+        google.charts.setOnLoadCallback(drawChart_bmi);
 
-        function drawChart() {
+        function drawChart_weight() {
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Date');
+            data.addColumn('number', 'Weight');
+
+            data.addRows([
+                [date[0], weight[0]],
+                [date[1], weight[1]],
+                [date[2], weight[2]],
+                [date[3], weight[3]],
+                [date[4], weight[4]],
+                [date[5], weight[5]],
+                [date[6], weight[6]],
+                [date[7], weight[7]],
+                [date[8], weight[8]],
+                [date[9], weight[9]]
+            ]);
+
+            var options = {
+                hAxis: {
+                    title: 'Time'
+                },
+                vAxis: {
+                    title: 'kg'
+                },
+                width: '900px',
+                height: '500px'
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('linechart_material_1'));
+            chart.draw(data, options);
+        }
+
+        function drawChart_height() {
 
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Date');
             data.addColumn('number', 'Height');
-            data.addColumn('number', 'Weight');
-            data.addColumn('number', 'BMI');
 
             data.addRows([
-                [date[0], height[0], weight[0], BMI[0]],
-                [date[1], height[1], weight[1], BMI[1]],
-                [date[2], height[2], weight[2], BMI[2]],
-                [date[3], height[3], weight[3], BMI[3]],
-                [date[4], height[4], weight[4], BMI[4]],
-                [date[5], height[5], weight[5], BMI[5]],
-                [date[6], height[6], weight[6], BMI[6]],
-                [date[7], height[7], weight[7], BMI[7]],
-                [date[8], height[8], weight[8], BMI[8]],
-                [date[9], height[9], weight[9], BMI[9]]
+                [date[0], height[0]],
+                [date[1], height[1]],
+                [date[2], height[2]],
+                [date[3], height[3]],
+                [date[4], height[4]],
+                [date[5], height[5]],
+                [date[6], height[6]],
+                [date[7], height[7]],
+                [date[8], height[8]],
+                [date[9], height[9]]
             ]);
 
             var options = {
-                chart: {
-                    title: 'Displaying your body scale.',
+                hAxis: {
+                    title: 'Time'
                 },
-                width: 900,
-                height: 500
+                vAxis: {
+                    title: 'cm'
+                },
+                width: '900px',
+                height: '500px'
             };
 
-            var chart = new google.charts.Line(document.getElementById('linechart_material'));
+            var chart = new google.visualization.LineChart(document.getElementById('linechart_material_2'));
+            chart.draw(data, options);
+        }
 
-            chart.draw(data, google.charts.Line.convertOptions(options));
+        function drawChart_bmi() {
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Date');
+            data.addColumn('number', 'BMI');
+
+            data.addRows([
+                [date[0], BMI[0]],
+                [date[1], BMI[1]],
+                [date[2], BMI[2]],
+                [date[3], BMI[3]],
+                [date[4], BMI[4]],
+                [date[5], BMI[5]],
+                [date[6], BMI[6]],
+                [date[7], BMI[7]],
+                [date[8], BMI[8]],
+                [date[9], BMI[9]]
+            ]);
+
+            var options = {
+                hAxis: {
+                    title: 'Time'
+                },
+                vAxis: {
+                    title: 'Kg/m^2'
+                },
+                width: '900px',
+                height: '500px'
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('linechart_material_3'));
+            chart.draw(data, options);
         }
     }
     else {
