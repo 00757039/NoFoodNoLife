@@ -210,8 +210,8 @@ function display(formData) {
                 vAxis: {
                     title: 'cm'
                 },
-                width: '900px',
-                height: '500px'
+                width: 900,
+                height: 500
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('linechart_material_2'));
@@ -244,8 +244,8 @@ function display(formData) {
                 vAxis: {
                     title: 'Kg/m^2'
                 },
-                width: '900px',
-                height: '500px'
+                width: 900,
+                height: 500
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('linechart_material_3'));
